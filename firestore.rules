@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{d}/documents {
+    function signed(){ return request.auth != null; }
+    function own(u){ return signed() && request.auth.uid == u; }
+    function admin(){ return signed() && get(/databases/$(d)/documents/users/$(request.auth.uid)).data.role == 'admin'; }
+    match /users/{u} {
+      allow read: if own(u) || admin();
+      allow create: if own(u) && request.resource.data.role == 'user' && request.resource.data.blocked == false
+        && request.resource.data.subscriptionStatus == 'trial'
+        && request.resource.data.trialEndDate <= request.time + duration.value(7,'d');
+      allow update: if admin() || (own(u) && request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['prenom','nom','tel','ent','ninea','adr','photo','paymentMethod','paymentReference','paymentScreenshot','paymentValidationStatus']));
+      allow delete: if own(u) || admin();
+      match /transactions/{t} { allow read, write: if own(u); }
+      match /categories/{c} { allow read, write: if own(u); }
+      match /notifications/{n} { allow read, update, delete: if own(u); allow create: if admin(); }
+    }
+    match /payments/{p} {
+      allow create: if signed() && request.resource.data.userId == request.auth.uid && request.resource.data.status == 'pending';
+      allow read: if admin() || (signed() && resource.data.userId == request.auth.uid);
+      allow update: if admin();
+    }
+  }
+}
