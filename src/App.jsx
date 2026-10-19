@@ -5,6 +5,7 @@ import {createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuth
 import {doc,setDoc,updateDoc,onSnapshot,collection,addDoc,deleteDoc,query,orderBy,where,Timestamp,writeBatch,getDocs} from 'firebase/firestore';
 import {auth,db} from './firebase';
 import { exportPDF, exportExcel } from "./utils/export.js";
+import DettesCreances from "./pages/DettesCreances";
 let push=()=>{};const toast=(m,e)=>push(m,e);
 const F=n=>Math.round(n||0).toLocaleString('fr-FR').replace(/[\u202f\u00a0]/g,' ')+' FCFA',TD=()=>new Date().toISOString().slice(0,10);
 const ms=t=>t?.toMillis?t.toMillis():0,DT=d=>!d?'':(d.toDate?d.toDate().toISOString().slice(0,10):d).split('-').reverse().join('/');
