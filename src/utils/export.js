@@ -12,10 +12,10 @@ function filtrer(transactions, mois) {
 function totaux(liste) {
   const recettes = liste
     .filter((t) => t.type === "recette")
-    .reduce((s, t) => s + Number(t.montant), 0);
+    .reduce((s, t) => s + Number(t.amount), 0);
   const depenses = liste
     .filter((t) => t.type === "depense")
-    .reduce((s, t) => s + Number(t.montant), 0);
+    .reduce((s, t) => s + Number(t.amount), 0);
   return { recettes, depenses, solde: recettes - depenses };
 }
 
@@ -42,9 +42,9 @@ export function exportPDF(transactions, mois, entreprise = "Compta facile") {
     body: liste.map((x) => [
       x.date,
       x.type === "recette" ? "Recette" : "Dépense",
-      x.categorie || "",
-      x.description || "",
-      fcfa(x.montant),
+      x.category || "",
+      x.label || "",
+      fcfa(x.amount),
     ]),
     headStyles: { fillColor: [16, 185, 129] },
   });
@@ -59,9 +59,9 @@ export function exportExcel(transactions, mois) {
   const lignes = liste.map((x) => ({
     Date: x.date,
     Type: x.type === "recette" ? "Recette" : "Dépense",
-    Catégorie: x.categorie || "",
-    Description: x.description || "",
-    "Montant (FCFA)": Number(x.montant),
+    Catégorie: x.category || "",
+    Description: x.label || "",
+    "Montant (FCFA)": Number(x.amount),
   }));
 
   const wb = XLSX.utils.book_new();
