@@ -14,6 +14,7 @@ service cloud.firestore {
       allow delete: if own(u) || admin();
       match /transactions/{t} { allow read, write: if own(u); }
       match /categories/{c} { allow read, write: if own(u); }
+match /categories/{c} { allow read, write: if own(u); }
       match /notifications/{n} { allow read, update, delete: if own(u); allow create: if admin(); }
     }
     match /payments/{p} {
