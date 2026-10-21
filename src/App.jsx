@@ -4,7 +4,7 @@ import {PieChart,Pie,Cell,LineChart,Line,XAxis,Tooltip,ResponsiveContainer} from
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,sendPasswordResetEmail,updatePassword,EmailAuthProvider,reauthenticateWithCredential,deleteUser,setPersistence,browserLocalPersistence,browserSessionPersistence} from 'firebase/auth';
 import {doc,setDoc,updateDoc,onSnapshot,collection,addDoc,deleteDoc,query,orderBy,where,Timestamp,writeBatch,getDocs} from 'firebase/firestore';
 import {auth,db} from './firebase';
-import { exportPDF, exportExcel, exportFacture } from "./utils/export";
+import { exportPDF, exportExcel, exportFacture } from "./utils/export.js";
 import Commandes from "./pages/Commandes";
 import Clients from "./pages/Clients";
 import {wa,norm,msgFacture,msgRelance} from "./utils/whatsapp";
